@@ -18,18 +18,17 @@ import static org.springframework.http.HttpMethod.PUT;
 @Component
 public class WalrusCloudService implements CloudService{
 
+//    @Value("${walrus.app.url}")
+    private String walrusUrl = "https://publisher.walrus-testnet.walrus.space/v1/blobs";
 
-    @Value("${walrus.app.url}")
-    private String walrusUrl;
+//    @Value("${walrus.app.aggregator}")
+    private String walrusAggregator = "https://aggregator.walrus-testnet.walrus.space/v1/blobs/";
 
-    @Value("${walrus.app.aggregator}")
-    private String walrusAggregator;
+//    @Value("${walrus.app.epoch}")
+    private String epoch = "5";
 
-    @Value("${walrus.app.epoch}")
-    private String epoch;
-
-    @Value("${walrus.app.address}")
-    private String walrusUploadAddress;
+//    @Value("${walrus.app.address}")
+    private String walrusUploadAddress = "0x202f0872cf991ed2091c1a949891bd2b45cdc2a687343a54064244d3066b43b6";
 
     @Autowired
     private RestTemplate restTemplate;

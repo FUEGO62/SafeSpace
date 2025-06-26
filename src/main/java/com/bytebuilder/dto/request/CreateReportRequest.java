@@ -12,8 +12,7 @@ public class CreateReportRequest {
 
     private double longitude;
     private double latitude;
-    private List<String> likes = new ArrayList<>();
-    private List<String> dislikes = new ArrayList<>();
+
     private Type type;
     private String issuer;
     private String pictureId;
