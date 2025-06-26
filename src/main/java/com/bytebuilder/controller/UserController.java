@@ -28,7 +28,6 @@ public class UserController {
     }
 
 
-
     @GetMapping("reach")
     public String hello(){
         return "hello";
