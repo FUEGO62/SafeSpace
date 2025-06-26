@@ -1,6 +1,7 @@
 package com.bytebuilder.service;
 
 import com.bytebuilder.data.model.Comment;
+import com.bytebuilder.data.model.Location;
 import com.bytebuilder.data.model.Report;
 import com.bytebuilder.data.model.User;
 import com.bytebuilder.data.repository.CommentRepository;
@@ -88,6 +89,12 @@ public class UserServiceImpl implements UserService {
         report.setDislikes(dislikes);
         reportRepository.save(report);
         return dislikes;
+    }
+
+
+    public List<Location> getLocation(String username) {
+        User user = userRepository.findByName(username);
+        return user.getKeyLocations();
     }
 
     @Override

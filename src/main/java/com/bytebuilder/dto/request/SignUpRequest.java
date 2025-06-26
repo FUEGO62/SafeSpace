@@ -10,4 +10,5 @@ public class SignUpRequest {
     private String name;
     private String password;
     private List<Location> locations;
+
 }
