@@ -3,5 +3,5 @@ COPY . .
 RUN mvn clean package -DskipTests
 FROM eclipse-temurin:21-alpine
 COPY --from=build /target/hackerHouse-1.0-SNAPSHOT.jar hackerHouse.jar
-ENTRYPOINT ["java","-Dspring.profiles.active=render","-jar","hackerHouse.jar"]
-EXPOSE 9191
+EXPOSE 8080
+ENTRYPOINT ["java","-jar","hackerHouse.jar"]
