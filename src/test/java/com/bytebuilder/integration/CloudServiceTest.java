@@ -41,7 +41,6 @@ public class CloudServiceTest {
     void testCanGetfile() {
         String blobId = "kEhIz0Hxm32BYmU4mJyTFcYoDWXXRskzNuKUJYQ1REg";
         byte[] fileContent = cloudService.getFileBy(blobId);
-        System.out.println(Arrays.toString(fileContent));
         assertThat(fileContent).isNotNull();
         assertThat(fileContent).isNotEmpty();
     }

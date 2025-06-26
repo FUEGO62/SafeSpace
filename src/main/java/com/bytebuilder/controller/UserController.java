@@ -21,6 +21,10 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @GetMapping("reach")
+    public String hello(){
+        return "hello";
+    }
 
     @PostMapping("/signUp")
     public ResponseEntity<?> signUp(@RequestBody SignUpRequest signUpRequest) {
