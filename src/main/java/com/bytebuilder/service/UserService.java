@@ -1,6 +1,7 @@
 package com.bytebuilder.service;
 
 import com.bytebuilder.data.model.Comment;
+import com.bytebuilder.data.model.Location;
 import com.bytebuilder.dto.request.*;
 import com.bytebuilder.dto.response.AuthResponse;
 
@@ -13,4 +14,5 @@ public interface UserService {
     List<String> like(ReportInteractRequest request);
     List<String> dislike(ReportInteractRequest request);
     List<Comment> comment(CommentRequest request);
+    List<Location> getLocation(String username);
 }

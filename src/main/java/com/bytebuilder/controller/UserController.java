@@ -53,6 +53,11 @@ public class UserController {
         }
     }
 
+    @GetMapping("/getLocation")
+    public ResponseEntity<?> getLocation(@AuthenticationPrincipal UserDetails userDetails) {
+        return ResponseEntity.ok(userService.getLocation(userDetails.getUsername()));
+    }
+
     @PostMapping("/updateLocation")
     public ResponseEntity<?> updateLocation(@AuthenticationPrincipal UserDetails userDetails,
                                             @RequestBody UpdateLocationRequest updateLocationRequest,

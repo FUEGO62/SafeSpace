@@ -14,7 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 @Service
@@ -92,9 +92,10 @@ public class UserServiceImpl implements UserService {
     }
 
 
+    @Override
     public List<Location> getLocation(String username) {
         User user = userRepository.findByName(username);
-        return user.getKeyLocations();
+        return user.getLocations();
     }
 
     @Override

@@ -13,5 +13,5 @@ public class User {
     private double currentLatitude;
     private String name;
     private String password;
-    private List<Location> keyLocations;
+    private List<Location> locations;
 }
