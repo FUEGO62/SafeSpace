@@ -31,7 +31,7 @@ public class UserController {
 
     @GetMapping("reach")
     public String hello(){
-        return "hello";
+        return "ma sere";
     }
 
     @PostMapping("/signUp")
