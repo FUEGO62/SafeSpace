@@ -9,12 +9,14 @@ import com.bytebuilder.data.repository.ReportRepository;
 import com.bytebuilder.data.repository.UserRepository;
 import com.bytebuilder.dto.request.*;
 import com.bytebuilder.dto.response.AuthResponse;
+import com.bytebuilder.dto.response.ViewReportResponse;
 import com.bytebuilder.util.JwtService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -94,9 +96,41 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<Location> getLocation(String username) {
+        System.out.println(username);
         User user = userRepository.findByName(username);
         return user.getLocations();
     }
+
+    @Override
+    public List<ViewReportResponse> viewReport(ViewReportRequest request) {
+        double long1 = Double.parseDouble(request.getLongitude());
+        double lat1 = Double.parseDouble(request.getLatitude());
+        List<Report> reports  = reportRepository.findAll().stream().filter(x->(
+                calculateDistance(lat1,long1, x.getLatitude(), x.getLongitude())<0.77
+                )).toList();
+        List<ViewReportResponse> responses = new ArrayList<>();
+        return responses;
+    }
+
+    private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+
+        double EARTH_RADIUS_KM = 6371;
+
+        double lat1Rad = Math.toRadians(lat1);
+        double lat2Rad = Math.toRadians(lat2);
+        double deltaLat = Math.toRadians(lat2 - lat1);
+        double deltaLon = Math.toRadians(lon2 - lon1);
+
+
+        double a = Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
+                Math.cos(lat1Rad) * Math.cos(lat2Rad) *
+                        Math.sin(deltaLon / 2) * Math.sin(deltaLon / 2);
+
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        return EARTH_RADIUS_KM * c;
+    }
+
 
     @Override
     public List<Comment> comment(CommentRequest request) {

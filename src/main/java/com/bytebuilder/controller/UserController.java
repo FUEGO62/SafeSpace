@@ -76,11 +76,19 @@ public class UserController {
     }
 
     @PostMapping("/getLocation")
-    public ResponseEntity<?> getLocation(Token token) {
-
-        String username = jwtService.extractUsername(token.getToken());
-
+    public ResponseEntity<?> getLocation(@RequestBody Token token) {
+        String username  = jwtService.extractUsername(token.getToken());
         return ResponseEntity.ok(userService.getLocation(username));
+    }
+
+    @PostMapping("/comment")
+    public ResponseEntity<?> comment(@RequestBody CommentRequest commentRequest) {
+        try {
+            return ResponseEntity.ok(userService.comment(commentRequest));
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PostMapping("/updateLocation")
