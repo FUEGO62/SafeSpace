@@ -42,16 +42,16 @@ public class UserController {
         }
     }
 
-    @PostMapping("/createReport")
-    public ResponseEntity<?> createReport(@RequestParam("image") CreateReportRequest createReportRequest) {
+    @PostMapping("/uploadImage")
+    public ResponseEntity<String> uploadImage(@RequestParam("image") MultipartFile image) {
         try {
-            MultipartFile file = createReportRequest.getPicture();
-            String blobId = cloudService.upload(file);
-            System.out.println(blobId);
-            return ResponseEntity.ok(blobId);
-        }
-        catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+
+            System.out.println("Received file: " + image.getOriginalFilename());
+            System.out.println("Size: " + image.getSize());
+
+            return ResponseEntity.ok("Image uploaded successfully");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Upload failed: " + e.getMessage());
         }
     }
 
