@@ -23,13 +23,6 @@ public class UserController {
     @Autowired
     private JwtService jwtService;
 
-
-    @GetMapping("reachh")
-    public String hola(){
-        return "jesse";
-    }
-
-
     @GetMapping("reach")
     public String hello(){
         return "ma sere";
@@ -85,6 +78,16 @@ public class UserController {
     public ResponseEntity<?> comment(@RequestBody CommentRequest commentRequest) {
         try {
             return ResponseEntity.ok(userService.comment(commentRequest));
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/viewReport")
+    public ResponseEntity<?> viewReport(@RequestBody ViewReportRequest viewReportRequest) {
+        try {
+            return ResponseEntity.ok(userService.viewReport(viewReportRequest));
         }
         catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

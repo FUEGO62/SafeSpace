@@ -10,6 +10,7 @@ import com.bytebuilder.data.repository.UserRepository;
 import com.bytebuilder.dto.request.*;
 import com.bytebuilder.dto.response.AuthResponse;
 import com.bytebuilder.dto.response.ViewReportResponse;
+import com.bytebuilder.integration.CloudService;
 import com.bytebuilder.util.JwtService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    @Autowired
+    private CloudService cloudService;
 
     @Autowired
     private UserRepository userRepository;
@@ -109,6 +113,15 @@ public class UserServiceImpl implements UserService {
                 calculateDistance(lat1,long1, x.getLatitude(), x.getLongitude())<0.77
                 )).toList();
         List<ViewReportResponse> responses = new ArrayList<>();
+        ViewReportResponse response;
+        for(Report report : reports){
+            response = modelMapper.map(report, ViewReportResponse.class);
+            String blobId = report.getPictureId();
+            byte[] image = cloudService.getFileBy(blobId);
+            response.setPicture(image);
+            responses.add(response);
+        }
+
         return responses;
     }
 
