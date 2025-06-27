@@ -1,5 +1,6 @@
 package com.bytebuilder.dto.response;
 
+import com.bytebuilder.data.model.Comment;
 import com.bytebuilder.data.model.Type;
 import lombok.Data;
 
@@ -19,4 +20,5 @@ public class ViewReportResponse {
     private String time;
     private boolean isVerified;
     private boolean isEmergency;
+    private List<Comment> comments = new ArrayList<>();
 }

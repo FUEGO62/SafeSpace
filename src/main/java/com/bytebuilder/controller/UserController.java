@@ -1,21 +1,25 @@
 package com.bytebuilder.controller;
 
 import com.bytebuilder.dto.request.*;
+import com.bytebuilder.integration.CloudService;
 import com.bytebuilder.service.UserService;
 import com.bytebuilder.util.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
+
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
 @RequestMapping("/user")
 @CrossOrigin("*")
 public class UserController {
+
+    @Autowired
+    private CloudService cloudService;
 
     @Autowired
     private UserService userService;
@@ -32,6 +36,19 @@ public class UserController {
     public ResponseEntity<?> signUp(@RequestBody SignUpRequest signUpRequest) {
         try {
             return ResponseEntity.ok(userService.register(signUpRequest));
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/createReport")
+    public ResponseEntity<?> createReport(@RequestBody CreateReportRequest createReportRequest) {
+        try {
+            MultipartFile file = createReportRequest.getPicture();
+            String blobId = cloudService.upload(file);
+            System.out.println(blobId);
+            return ResponseEntity.ok(blobId);
         }
         catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -57,6 +74,7 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
 
     @PostMapping("/logIn")
     public ResponseEntity<?> logIn(@RequestBody LogInRequest logInRequest) {

@@ -153,7 +153,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public void createReport(CreateReportRequest request) {
-        Report report = modelMapper.map(request, Report.class);
+
     }
 
     private void validate(final String name) {
