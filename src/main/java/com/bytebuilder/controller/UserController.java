@@ -1,6 +1,7 @@
 package com.bytebuilder.controller;
 
 import com.bytebuilder.dto.request.LogInRequest;
+import com.bytebuilder.dto.request.ReportInteractRequest;
 import com.bytebuilder.dto.request.SignUpRequest;
 import com.bytebuilder.dto.request.UpdateLocationRequest;
 import com.bytebuilder.service.UserService;
@@ -37,6 +38,26 @@ public class UserController {
     public ResponseEntity<?> signUp(@RequestBody SignUpRequest signUpRequest) {
         try {
             return ResponseEntity.ok(userService.register(signUpRequest));
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/like")
+    public ResponseEntity<?> like(@RequestBody ReportInteractRequest reportInteractRequest ) {
+        try {
+            return ResponseEntity.ok(userService.like(reportInteractRequest));
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/dislike")
+    public ResponseEntity<?> dislike(@RequestBody ReportInteractRequest reportInteractRequest ) {
+        try {
+            return ResponseEntity.ok(userService.dislike(reportInteractRequest));
         }
         catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
