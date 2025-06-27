@@ -10,6 +10,8 @@ import java.util.List;
 @Data
 public class ViewReportResponse {
 
+    private String reportId;
+    private String title;
     private double longitude;
     private double latitude;
     private List<String> likes = new ArrayList<>();

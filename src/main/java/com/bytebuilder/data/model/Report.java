@@ -11,6 +11,7 @@ public class Report {
 
     @Id
     private String id;
+    private String title;
     private double longitude;
     private double latitude;
     private List<String> likes = new ArrayList<>();
