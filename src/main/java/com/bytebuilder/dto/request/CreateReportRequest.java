@@ -12,7 +12,6 @@ public class CreateReportRequest {
     private Type type;
     private String username;
     private String time;
-    private String issuer;
     private String pictureId;
     private boolean isEmergency;
 

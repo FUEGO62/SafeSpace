@@ -18,4 +18,5 @@ public interface UserService {
     List<Comment> comment(CommentRequest request);
     List<Location> getLocation(String username);
     List<ViewReportResponse> viewReport(ViewReportRequest request);
+    void createReport(CreateReportRequest request);
 }

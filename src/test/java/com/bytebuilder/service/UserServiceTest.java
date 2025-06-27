@@ -4,6 +4,7 @@ import com.bytebuilder.data.model.Location;
 
 import com.bytebuilder.data.model.Report;
 import com.bytebuilder.data.model.Type;
+import com.bytebuilder.data.model.User;
 import com.bytebuilder.data.repository.ReportRepository;
 import com.bytebuilder.data.repository.UserRepository;
 import com.bytebuilder.dto.request.LogInRequest;
@@ -15,8 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -42,10 +42,29 @@ class UserServiceTest {
         report.setLongitude(3.5179751);
         report.setDislikes(new ArrayList<>());
         report.setLikes(new ArrayList<>());
-        report.setIssuer("3baba");
+        report.setUsername("3baba");
         report.setVerified(true);
         report.setTitle("unknown gun men ");
         reportRepository.save(report);
+    }
+
+    @Test
+    public void tested(){
+        ArrayList<Integer> candidates = new ArrayList<>(List.of(1,2,3,4,5,6,7,8,9,10,2,3,4));
+
+        int randomSize = (int) (candidates.size()*0.65) + 1;
+        Set<Integer> indexes = new HashSet<>();
+        List<Integer> agreements = new ArrayList<>();
+        Random rand = new Random();
+        int max = candidates.size()-1;
+        int min = 0;
+        for (int i = 0; indexes.size()<randomSize; i++) {
+            int num = rand.nextInt(max - min + 1) + min;
+            indexes.add(num);
+        }
+        System.out.println(randomSize);
+        System.out.println(indexes.toString());
+        indexes. forEach(x->{agreements.add(candidates.get(x));});
     }
 
     @Test
@@ -84,16 +103,7 @@ class UserServiceTest {
         System.out.println(authResponse.getToken());
     }
 
-    @Test
-    public void testUserCanLikeReports() {
-        Report report = new Report();
-        report.setEmergency(false);
-        report.setType(Type.FLOOD);
-        report.setTime("yoo");
-        report.setIssuer("");
-        report.setLatitude(6.788);
-        report.setLongitude(3.29);
-        reportRepository.save(report);
 
-    }
+
+
 }

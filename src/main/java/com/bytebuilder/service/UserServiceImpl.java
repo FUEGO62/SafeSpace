@@ -17,8 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -117,8 +116,8 @@ public class UserServiceImpl implements UserService {
 
         List<Report> reports  = reportRepository.findAll().stream().filter(x->(
                 calculateDistance(lat1,long1, x.getLatitude(), x.getLongitude())<0.77
-                )).toList();
-        reports.stream().forEach(System.out::println);
+                )).filter(x->(!x.isPending())).toList();
+
 
         List<ViewReportResponse> responses = new ArrayList<>();
         ViewReportResponse response;
@@ -166,9 +165,43 @@ public class UserServiceImpl implements UserService {
         return  commentRepository.findAll().stream().filter(x->(x.getReportId().equals(request.getReportId()))).toList();
     }
 
+    @Override
     public void createReport(CreateReportRequest request) {
-
+        Report report = modelMapper.map(request, Report.class);
+        report.setPending(true);
+        reportRepository.save(report);
+        randomAlgorithm(report);
     }
+
+    private void randomAlgorithm(Report report) {
+        double latitude = report.getLatitude();
+        double longitude = report.getLongitude();
+
+        List<User> candidates = userRepository.findAll()
+                .stream()
+                .filter(x->(calculateDistance(latitude,longitude, x.getCurrentLatitude(), x.getCurrentLongitude())<0.77))
+                .toList();
+
+        int randomSize = (int) (candidates.size()*0.65) + 1;
+        Set<Integer> indexes = new HashSet<>();
+        List<User> agreements = new ArrayList<>();
+        Random rand = new Random();
+        int max = candidates.size()-1;
+        int min = 0;
+        for (int i = 0; indexes.size()<randomSize; i++) {
+            int num = rand.nextInt(max - min + 1) + min;
+            indexes.add(num);
+        }
+        indexes.forEach(x->agreements.add(candidates.get(x)));
+        agreements.forEach(user->{
+            List<Report> reports = user.getInbox();
+            reports.add(report);
+            user.setInbox(reports);
+            reportRepository.save(report);
+        });
+    }
+
+
 
     private void validate(final String name) {
         if (name == null || name.trim().isEmpty())

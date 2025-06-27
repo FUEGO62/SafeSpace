@@ -44,7 +44,13 @@ public class UserController {
 
     @PostMapping("/createReport")
     public ResponseEntity<?> createReport(@RequestBody CreateReportRequest createReportRequest) {
-        return null;
+        try {
+            userService.createReport(createReportRequest);
+            return ResponseEntity.ok("Report created");
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PostMapping("/uploadImage")

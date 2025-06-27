@@ -17,9 +17,13 @@ public class Report {
     private List<String> likes = new ArrayList<>();
     private List<String> dislikes = new ArrayList<>();
     private Type type;
-    private String issuer;
+    private String username;
     private String pictureId;
     private String time;
     private boolean isVerified;
     private boolean isEmergency;
+    private boolean isValid;
+    private boolean isPending;
+    private List<String> confirms = new ArrayList<>();
+    private List<String> denys = new ArrayList<>();
 }
