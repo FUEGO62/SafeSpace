@@ -75,7 +75,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/getLocation")
+    @PostMapping("/getLocation")
     public ResponseEntity<?> getLocation(Token token) {
 
         String username = jwtService.extractUsername(token.getToken());
