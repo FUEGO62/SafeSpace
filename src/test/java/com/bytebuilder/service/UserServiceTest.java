@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,6 +34,18 @@ class UserServiceTest {
 
     @Autowired
     UserService userService;
+
+    @Test
+    public void test(){
+        Report report = new Report();
+        report.setLatitude(6.4551703);
+        report.setLongitude(3.5179751);
+        report.setDislikes(new ArrayList<>());
+        report.setLikes(new ArrayList<>());
+        report.setIssuer("3baba");
+        report.setVerified(true);
+        reportRepository.save(report);
+    }
 
     @Test
     public void testUserCanRegister() {

@@ -43,7 +43,7 @@ public class UserController {
     }
 
     @PostMapping("/createReport")
-    public ResponseEntity<?> createReport(@RequestBody CreateReportRequest createReportRequest) {
+    public ResponseEntity<?> createReport(@RequestParam("image") CreateReportRequest createReportRequest) {
         try {
             MultipartFile file = createReportRequest.getPicture();
             String blobId = cloudService.upload(file);

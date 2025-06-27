@@ -107,18 +107,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<ViewReportResponse> viewReport(ViewReportRequest request) {
+
         double long1 = Double.parseDouble(request.getLongitude());
         double lat1 = Double.parseDouble(request.getLatitude());
+
         List<Report> reports  = reportRepository.findAll().stream().filter(x->(
                 calculateDistance(lat1,long1, x.getLatitude(), x.getLongitude())<0.77
                 )).toList();
+        reports.stream().forEach(System.out::println);
+
         List<ViewReportResponse> responses = new ArrayList<>();
         ViewReportResponse response;
         for(Report report : reports){
             response = modelMapper.map(report, ViewReportResponse.class);
-            String blobId = report.getPictureId();
-            byte[] image = cloudService.getFileBy(blobId);
-            response.setPicture(image);
+//            String blobId = report.getPictureId();
+//            byte[] image = cloudService.getFileBy(blobId);
+//            response.setPicture(image);
             responses.add(response);
         }
 
@@ -128,6 +132,11 @@ public class UserServiceImpl implements UserService {
     private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
 
         double EARTH_RADIUS_KM = 6371;
+        System.out.println(lat1);
+        System.out.println(lon1);
+        System.out.println(lat2);
+        System.out.println(lon2);
+
 
         double lat1Rad = Math.toRadians(lat1);
         double lat2Rad = Math.toRadians(lat2);
@@ -140,7 +149,7 @@ public class UserServiceImpl implements UserService {
                         Math.sin(deltaLon / 2) * Math.sin(deltaLon / 2);
 
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
+        System.out.println((EARTH_RADIUS_KM * c));
         return EARTH_RADIUS_KM * c;
     }
 

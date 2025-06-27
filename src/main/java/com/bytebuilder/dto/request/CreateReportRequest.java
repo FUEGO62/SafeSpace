@@ -11,10 +11,7 @@ public class CreateReportRequest {
     private double longitude;
     private double latitude;
     private Type type;
-    private String issuer;
-    private String pictureId;
+    private String username;
     private String time;
-    private boolean isVerified;
-    private boolean isEmergency;
     private MultipartFile picture;
 }
