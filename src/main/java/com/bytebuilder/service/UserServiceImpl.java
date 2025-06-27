@@ -79,6 +79,8 @@ public class UserServiceImpl implements UserService {
     public List<String> like(ReportInteractRequest request) {
         Report report = reportRepository.findById(request.getReportId()).get();
         List<String> likes = report.getLikes();
+        List<String> dislikes = report.getDislikes();
+        if(dislikes.contains(request.getUsername()))dislikes.remove(request.getUsername());
         if(likes.contains(request.getUsername()))likes.remove(request.getUsername());
         else likes.add(request.getUsername());
         report.setLikes(likes);
@@ -90,6 +92,8 @@ public class UserServiceImpl implements UserService {
     public List<String> dislike(ReportInteractRequest request) {
         Report report = reportRepository.findById(request.getReportId()).get();
         List<String> dislikes = report.getDislikes();
+        List<String> likes = report.getLikes();
+        if(likes.contains(request.getUsername()))likes.remove(request.getUsername());
         if(dislikes.contains(request.getUsername()))dislikes.remove(request.getUsername());
         else dislikes.add(request.getUsername());
         report.setDislikes(dislikes);
@@ -124,6 +128,7 @@ public class UserServiceImpl implements UserService {
 //            byte[] image = cloudService.getFileBy(blobId);
 //            response.setPicture(image);
             responses.add(response);
+
         }
 
         return responses;

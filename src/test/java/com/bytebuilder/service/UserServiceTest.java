@@ -44,6 +44,7 @@ class UserServiceTest {
         report.setLikes(new ArrayList<>());
         report.setIssuer("3baba");
         report.setVerified(true);
+        report.setTitle("unknown gun men ");
         reportRepository.save(report);
     }
 
