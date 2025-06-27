@@ -1,10 +1,8 @@
 package com.bytebuilder.controller;
 
-import com.bytebuilder.dto.request.LogInRequest;
-import com.bytebuilder.dto.request.ReportInteractRequest;
-import com.bytebuilder.dto.request.SignUpRequest;
-import com.bytebuilder.dto.request.UpdateLocationRequest;
+import com.bytebuilder.dto.request.*;
 import com.bytebuilder.service.UserService;
+import com.bytebuilder.util.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
@@ -21,6 +19,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private JwtService jwtService;
 
 
     @GetMapping("reachh")
@@ -75,13 +76,15 @@ public class UserController {
     }
 
     @GetMapping("/getLocation")
-    public ResponseEntity<?> getLocation(@AuthenticationPrincipal UserDetails userDetails) {
-        return ResponseEntity.ok(userService.getLocation(userDetails.getUsername()));
+    public ResponseEntity<?> getLocation(Token token) {
+
+        String username = jwtService.extractUsername(token.getToken());
+
+        return ResponseEntity.ok(userService.getLocation(username));
     }
 
     @PostMapping("/updateLocation")
-    public ResponseEntity<?> updateLocation(@AuthenticationPrincipal UserDetails userDetails,
-                                            @RequestBody UpdateLocationRequest updateLocationRequest,
+    public ResponseEntity<?> updateLocation(@RequestBody UpdateLocationRequest updateLocationRequest,
                                             BindingResult bindingResult) {
 
         try {
@@ -89,7 +92,7 @@ public class UserController {
                 return ResponseEntity.badRequest().body(bindingResult.getFieldError().getDefaultMessage());
             }
 
-            String username = userDetails.getUsername();
+            String username = jwtService.extractUsername(updateLocationRequest.getToken());
             userService.updateLocation(username, updateLocationRequest);
             return ResponseEntity.ok().build();
         }
