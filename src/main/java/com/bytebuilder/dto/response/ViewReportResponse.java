@@ -1,6 +1,7 @@
 package com.bytebuilder.dto.response;
 
 import com.bytebuilder.data.model.Comment;
+import com.bytebuilder.data.model.Report;
 import com.bytebuilder.data.model.Type;
 import lombok.Data;
 
@@ -25,4 +26,6 @@ public class ViewReportResponse {
     private List<String> confirms = new ArrayList<>();
     private List<String> denys = new ArrayList<>();
     private List<Comment> comments = new ArrayList<>();
+
+
 }

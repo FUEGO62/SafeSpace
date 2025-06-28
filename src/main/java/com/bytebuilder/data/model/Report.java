@@ -27,4 +27,10 @@ public class Report {
     private List<String> confirms = new ArrayList<>();
     private List<String> denys = new ArrayList<>();
     private int consensusNumber;
+
+    @Override
+    public boolean equals(Object o) {
+        return id.equals(((Report)o).getId());
+    }
 }
+
