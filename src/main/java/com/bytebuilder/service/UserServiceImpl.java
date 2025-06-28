@@ -253,6 +253,7 @@ public class UserServiceImpl implements UserService {
         List<User> candidates = userRepository.findAll()
                 .stream()
                 .filter(x->(calculateDistance(latitude,longitude, x.getCurrentLatitude(), x.getCurrentLongitude())<0.77))
+                .filter(x->(!x.getName().equals(report.getUsername())))
                 .toList();
 
         if(candidates.isEmpty()){
