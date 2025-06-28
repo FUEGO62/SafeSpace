@@ -230,9 +230,18 @@ public class UserServiceImpl implements UserService {
         String username = request.getUsername();
         User user = userRepository.findByName(username);
         List<ViewReportResponse> responses = new ArrayList<>();
+        String blobId;
+        byte[] image;
+        ViewReportResponse response;
         List<Report> inbox = user.getInbox();
         for(Report report : inbox){
-            responses.add(modelMapper.map(report, ViewReportResponse.class));
+            response = modelMapper.map(report, ViewReportResponse.class);
+            blobId = report.getPictureId();
+            if(!blobId.equals("dog")) {
+                image = cloudService.getFileBy(blobId);
+                response.setPicture(image);
+            }
+            responses.add(response);
         }
         return responses;
     }
@@ -272,7 +281,6 @@ public class UserServiceImpl implements UserService {
             reportRepository.save(report);
         });
     }
-
 
 
     private void validate(final String name) {

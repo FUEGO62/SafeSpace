@@ -17,7 +17,7 @@ public class ViewReportResponse {
     private List<String> likes = new ArrayList<>();
     private List<String> dislikes = new ArrayList<>();
     private Type type;
-    private String issuer;
+    private String username;
     private byte[] picture;
     private String time;
     private boolean isVerified;
