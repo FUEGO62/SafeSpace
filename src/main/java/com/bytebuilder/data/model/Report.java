@@ -26,4 +26,5 @@ public class Report {
     private boolean isPending;
     private List<String> confirms = new ArrayList<>();
     private List<String> denys = new ArrayList<>();
+    private int consensusNumber;
 }

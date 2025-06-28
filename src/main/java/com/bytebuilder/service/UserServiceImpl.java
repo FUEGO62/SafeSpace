@@ -116,7 +116,7 @@ public class UserServiceImpl implements UserService {
 
         List<Report> reports  = reportRepository.findAll().stream().filter(x->(
                 calculateDistance(lat1,long1, x.getLatitude(), x.getLongitude())<0.77
-                )).filter(x->(!x.isPending())).toList();
+                )).filter(x->(!x.isPending() &&!x.isValid())).toList();
 
 
         List<ViewReportResponse> responses = new ArrayList<>();
@@ -173,6 +173,66 @@ public class UserServiceImpl implements UserService {
         randomAlgorithm(report);
     }
 
+    @Override
+    public List<String> confirm(ReportInteractRequest request) {
+        Report report = reportRepository.findById(request.getReportId()).get();
+        List<String> confirm = report.getConfirms();
+        confirm.add(request.getUsername());
+        User user = userRepository.findByName(request.getUsername());
+        List<Report> inbox = user.getInbox();
+        inbox.remove(report);
+        user.setInbox(inbox);
+        userRepository.save(user);
+        report.setConfirms(confirm);
+        reportRepository.save(report);
+        checkRequirement(report);
+        return confirm;
+    }
+
+    private void checkRequirement(Report report) {
+        int confirms = report.getConfirms().size();
+        int denys = report.getDenys().size();
+        int total = report.getConsensusNumber();
+        int pass = confirms/total *100;
+        int fail = denys/total *100;
+        if (fail>65)report.setValid(false);
+        if(pass>65)report.setPending(false);
+        reportRepository.save(report);
+    }
+
+    @Override
+    public List<String> deny(ReportInteractRequest request) {
+        Report report = reportRepository.findById(request.getReportId()).get();
+        List<String> denys = report.getDenys();
+        denys.add(request.getUsername());
+        User user = userRepository.findByName(request.getUsername());
+        List<Report> inbox = user.getInbox();
+        inbox.remove(report);
+        user.setInbox(inbox);
+        userRepository.save(user);
+        report.setDenys(denys);
+        reportRepository.save(report);
+        checkRequirement(report);
+        return denys;
+    }
+
+    @Override
+    public List<Comment> viewComments(ReportInteractRequest request) {
+        return  commentRepository.findAll().stream().filter(x->(x.getReportId().equals(request.getReportId()))).toList();
+    }
+
+    @Override
+    public List<ViewReportResponse> viewInbox(ReportInteractRequest request) {
+        String username = request.getUsername();
+        User user = userRepository.findByName(username);
+        List<ViewReportResponse> responses = new ArrayList<>();
+        List<Report> inbox = user.getInbox();
+        for(Report report : inbox){
+            responses.add(modelMapper.map(report, ViewReportResponse.class));
+        }
+        return responses;
+    }
+
     private void randomAlgorithm(Report report) {
         double latitude = report.getLatitude();
         double longitude = report.getLongitude();
@@ -181,6 +241,12 @@ public class UserServiceImpl implements UserService {
                 .stream()
                 .filter(x->(calculateDistance(latitude,longitude, x.getCurrentLatitude(), x.getCurrentLongitude())<0.77))
                 .toList();
+
+        if(candidates.isEmpty()){
+            report.setPending(false);
+            reportRepository.save(report);
+            return;
+        }
 
         int randomSize = (int) (candidates.size()*0.65) + 1;
         Set<Integer> indexes = new HashSet<>();
@@ -197,6 +263,7 @@ public class UserServiceImpl implements UserService {
             List<Report> reports = user.getInbox();
             reports.add(report);
             user.setInbox(reports);
+            report.setConsensusNumber(randomSize);
             reportRepository.save(report);
         });
     }

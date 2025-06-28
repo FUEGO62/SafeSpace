@@ -1,9 +1,11 @@
 package com.bytebuilder.controller;
 
+import com.bytebuilder.data.model.Report;
 import com.bytebuilder.dto.request.*;
 import com.bytebuilder.integration.CloudService;
 import com.bytebuilder.service.UserService;
 import com.bytebuilder.util.JwtService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
@@ -17,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/user")
 @CrossOrigin("*")
 public class UserController {
+
 
     @Autowired
     private CloudService cloudService;
@@ -42,9 +45,30 @@ public class UserController {
         }
     }
 
+    @PostMapping("/viewInbox")
+    public ResponseEntity<?> viewInbox(@RequestBody ReportInteractRequest request){
+        try {
+            return ResponseEntity.ok(userService.viewInbox(request));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/viewComments")
+    public ResponseEntity<?> viewComments(@RequestBody ReportInteractRequest request) {
+        try {
+            return ResponseEntity.ok(userService.viewComments(request));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @PostMapping("/createReport")
     public ResponseEntity<?> createReport(@RequestBody CreateReportRequest createReportRequest) {
-        try {
+       try {
+
             userService.createReport(createReportRequest);
             return ResponseEntity.ok("Report created");
         }
