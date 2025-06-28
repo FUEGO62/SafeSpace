@@ -97,6 +97,26 @@ public class UserController {
         }
     }
 
+    @PostMapping("/confirm")
+    public ResponseEntity<?> confirm(@RequestBody ReportInteractRequest reportInteractRequest) {
+        try {
+           return ResponseEntity.ok(userService.confirm(reportInteractRequest));
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/deny")
+    public ResponseEntity<?> deny(@RequestBody ReportInteractRequest reportInteractRequest) {
+        try{
+            return ResponseEntity.ok(userService.deny(reportInteractRequest));
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @PostMapping("/dislike")
     public ResponseEntity<?> dislike(@RequestBody ReportInteractRequest reportInteractRequest ) {
         try {
