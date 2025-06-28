@@ -49,6 +49,28 @@ class UserServiceTest {
     }
 
     @Test
+    public void testInbox(){
+        User user = userRepository.findByName("latitude");
+        Report report = new Report();
+        report.setLatitude(0);
+        report.setLongitude(0);
+        report.setDislikes(new ArrayList<>());
+        report.setLikes(new ArrayList<>());
+        report.setUsername("3baba");
+        report.setVerified(true);
+        report.setPending(true);
+        report.setTitle("unknown gun men ");
+        report.setConfirms(new ArrayList<>());
+        report.setDenys(new ArrayList<>());
+        List<Report> inbox = user.getInbox();
+        inbox.add(report);
+        user.setInbox(inbox);
+        userRepository.save(user);
+        reportRepository.save(report);
+
+    }
+
+    @Test
     public void tested(){
         ArrayList<Integer> candidates = new ArrayList<>(List.of(1,2,3,4,5,6,7,8,9,10,2,3,4));
 
@@ -102,8 +124,4 @@ class UserServiceTest {
         assertEquals(jwtService.extractUsername(authResponse.getToken()), loginRequest.getName());
         System.out.println(authResponse.getToken());
     }
-
-
-
-
 }

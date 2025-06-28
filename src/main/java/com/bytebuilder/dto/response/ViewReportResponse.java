@@ -22,5 +22,7 @@ public class ViewReportResponse {
     private String time;
     private boolean isVerified;
     private boolean isEmergency;
+    private List<String> confirms = new ArrayList<>();
+    private List<String> denys = new ArrayList<>();
     private List<Comment> comments = new ArrayList<>();
 }

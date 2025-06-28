@@ -121,11 +121,15 @@ public class UserServiceImpl implements UserService {
 
         List<ViewReportResponse> responses = new ArrayList<>();
         ViewReportResponse response;
+        byte[] image;
         for(Report report : reports){
             response = modelMapper.map(report, ViewReportResponse.class);
-//            String blobId = report.getPictureId();
-//            byte[] image = cloudService.getFileBy(blobId);
-//            response.setPicture(image);
+            String blobId = report.getPictureId();
+
+            if(!blobId.equals("dog")) {
+                image = cloudService.getFileBy(blobId);
+                response.setPicture(image);
+            }
             responses.add(response);
 
         }
