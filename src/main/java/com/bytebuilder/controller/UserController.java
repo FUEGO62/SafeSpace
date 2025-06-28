@@ -6,13 +6,21 @@ import com.bytebuilder.integration.CloudService;
 import com.bytebuilder.service.UserService;
 import com.bytebuilder.util.JwtService;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 
 @RestController
@@ -33,6 +41,17 @@ public class UserController {
     @GetMapping("reach")
     public String hello(){
         return "ma sere";
+    }
+
+    @PostMapping("/seeImage")
+    public ResponseEntity<byte[]> getImage() throws IOException {
+        Path imagePath = Path.of("C:\\Users\\nzigw\\Downloads\\100+ Daisy Flower Aesthetic Backgrounds, Wallpapers, Illustrations (Free, High-Res).jpeg");
+        byte[] image = Files.readAllBytes(imagePath);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_JPEG);
+
+        return new ResponseEntity<>(image, headers, HttpStatus.OK);
     }
 
     @PostMapping("/signUp")

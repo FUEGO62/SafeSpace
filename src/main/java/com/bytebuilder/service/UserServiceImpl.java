@@ -267,6 +267,7 @@ public class UserServiceImpl implements UserService {
             List<Report> reports = user.getInbox();
             reports.add(report);
             user.setInbox(reports);
+            userRepository.save(user);
             report.setConsensusNumber(randomSize);
             reportRepository.save(report);
         });
